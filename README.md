@@ -52,6 +52,32 @@ Termite will select an LLM provider based on the environment variables you have 
 
 For example, if you have both `OPENAI_API_KEY` and `GEMINI_API_KEY` set, Termite will use OpenAI.
 
+## Running without installation
+
+If you prefer not to install Termite globally, you can run it directly from the cloned repository:
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/shobrook/termite.git
+    ```
+2.  Navigate to the project directory:
+    ```bash
+    cd termite
+    ```
+3.  Install dependencies:
+    ```bash
+    pip install rich requests google-generativeai ollama openai anthropic urwid textual
+    ```
+4.  Set the PYTHONPATH to include the current directory. This allows Python to find the Termite modules:
+    ```bash
+    export PYTHONPATH=$(pwd):$PYTHONPATH
+    ```
+5.  Run the tool using the Python module execution flag `-m`:
+    ```bash
+    python -m termite --help
+    ```
+    You can replace `--help` with any other Termite commands or prompts.
+
 ## Usage
 
 To use, run the following:
