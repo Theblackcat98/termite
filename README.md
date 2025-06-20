@@ -24,17 +24,33 @@ Please use with caution. Termite is still very experimental and it's obviously r
 Once installed, you can use OpenAI or Anthropic as your LLM provider. Just add the appropriate API key to your environment:
 
 ```bash
-> export OPENAI_API_KEY="..." # For GPT
-> export ANTHROPIC_API_KEY="..." # For Claude
+> export OPENAI_API_KEY="..." # For GPT-4o, etc.
+> export ANTHROPIC_API_KEY="..." # For Claude Sonnet, etc.
+> export GEMINI_API_KEY="..." # For Gemini Pro, etc.
+> export OLLAMA_MODEL="..." # For locally hosted models like Llama 3, e.g., OLLAMA_MODEL="llama3"
 ```
 
 If you're using OpenAI, you can also set your API URL by adding the following to your environment:
 
 ```bash
-> export OPENAI_BASE_URL="..." # Default to None
+> export OPENAI_BASE_URL="..." # Defaults to None
 ```
 
-For the best results, use Anthropic. For faster and cheaper results, use OpenAI.
+**Provider Details:**
+
+*   **OpenAI & Anthropic**: These are the recommended providers for best results.
+*   **Gemini**: Uses the `google-generativeai` Python package (which will be installed as a dependency if you use Gemini). It requires the `GEMINI_API_KEY` to be set. The default model used is `gemini-pro`.
+*   **Ollama**: Allows you to use locally hosted LLMs. You need to set the `OLLAMA_MODEL` environment variable to specify which model Ollama should use (e.g., `export OLLAMA_MODEL="llama3"`). Ollama integration supports streaming responses.
+
+**Provider Priority:**
+
+Termite will select an LLM provider based on the environment variables you have set, in the following order of priority:
+1.  OpenAI (`OPENAI_API_KEY`)
+2.  Anthropic (`ANTHROPIC_API_KEY`)
+3.  Gemini (`GEMINI_API_KEY`)
+4.  Ollama (`OLLAMA_MODEL`)
+
+For example, if you have both `OPENAI_API_KEY` and `GEMINI_API_KEY` set, Termite will use OpenAI.
 
 ## Usage
 
