@@ -55,14 +55,24 @@ def run_pty(command: str):
                         readable[fd].flush()
 
     finally:
-        # Once we've finished reading or an error occurred, close the child process.
-        if proc.poll() is None:
-            proc.terminate()
+        if proc.poll() is None:  # Check if process is still running
+            proc.terminate()  # Send SIGTERM
             try:
-                proc.wait(timeout=2)
+                proc.wait(timeout=0.5)  # Short wait for graceful termination
             except TimeoutExpired:
+                # SIGTERM failed or timed out, escalate to SIGKILL
                 proc.kill()
+                try:
+                    proc.wait(timeout=0.5) # Wait for SIGKILL to take effect
+                except TimeoutExpired:
+                    # This would be unusual, means SIGKILL also failed
+                    print(f"Error: Process {proc.pid} failed to terminate even after SIGKILL.", file=sys.stderr)
+            except Exception as e:
+                # Other exceptions during wait (e.g. InterruptedError)
+                print(f"Error waiting for process {proc.pid} termination: {e}", file=sys.stderr)
+                proc.kill() # Ensure kill if wait fails for other reasons
 
+        # Ensure master file descriptors are closed
         for fd in masters:
             try:
                 os.close(fd)

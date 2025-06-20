@@ -79,7 +79,6 @@ def run_in_pseudo_terminal(script: Script, timeout: int = 5) -> Tuple[str, str]:
             text=True,
             timeout=timeout,
         )
-        time.sleep(3)
         stdout = result.stdout if result.stdout else ""
         stderr = result.stderr if result.stderr else ""
     except TimeoutExpired:
@@ -126,6 +125,3 @@ def run_tui(script: Script, pseudo=True):
 
     script.stdout = stdout
     script.stderr = stderr
-
-
-# TODO: The PTY process is not being killed
